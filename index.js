@@ -3,6 +3,7 @@ import express from "express";
 import "express-async-errors";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import authRouter from "./routes/authRouters.js";
 
 const app = express();
 
@@ -13,9 +14,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
+// routers
+app.use("/api/v1/auth", authRouter);
 
 // not found handler
 app.use("*", (req, res) => {
