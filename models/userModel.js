@@ -1,30 +1,30 @@
 import mongoose from "mongoose";
-import validator from "validator";
+import { USER_ROLE } from "../utils/constants.js";
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required!"],
-      minLength: 3,
-      maxLength: 50,
+      // required: [true, "Name is required!"],
+      // minLength: 3,
+      // maxLength: 50,
     },
     email: {
       type: String,
-      unique: true,
-      required: [true, "Email is required!"],
-      validate: {
-        validator: validator.isEmail,
-        message: "Invalid Email Format!",
-      },
+      // unique: true,
+      // required: [true, "Email is required!"],
+      // validate: {
+      //   validator: validator.isEmail,
+      //   message: "Invalid Email Format!",
+      // },
     },
     password: {
       type: String,
-      required: [true, "Password is required!"],
+      // required: [true, "Password is required!"],
     },
     role: {
       type: String,
-      enum: ["admin", "user"],
+      enum: Object.values(USER_ROLE),
       default: "user",
     },
   },
