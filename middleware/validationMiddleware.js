@@ -1,6 +1,7 @@
-import { body, validationResult } from "express-validator";
-import { BadRequestError } from "../errors/customErrors.js";
+import { body, param, validationResult } from "express-validator";
+import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 import User from "../models/userModel.js";
+import { validateMongoId } from "../utils/validationUtils.js";
 
 const withValidationErrors = (validateValues) => {
   return [
@@ -42,4 +43,13 @@ export const validateRegisterInput = withValidationErrors([
     .withMessage("Password is required!")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters"),
+]);
+
+export const validateUserParamId = withValidationErrors([
+  param("id").custom(async (value, { req }) => {
+    validateMongoId(value);
+
+    const user = await User.findById(value);
+    if (!user) throw new NotFoundError("No User Found!");
+  }),
 ]);

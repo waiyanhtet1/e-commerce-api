@@ -1,9 +1,13 @@
+import User from "../models/userModel.js";
+
 export const getAllUser = async (req, res) => {
-  res.status(200).json("all users");
+  const users = await User.find({});
+  res.status(200).json(users);
 };
 
 export const getSingleUser = async (req, res) => {
-  res.status(200).json("single user");
+  const user = await User.findOne({ _id: req.params.id });
+  res.status(200).json(user);
 };
 
 export const getCurrentUser = async (req, res) => {
