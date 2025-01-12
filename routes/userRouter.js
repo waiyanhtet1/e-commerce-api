@@ -6,11 +6,12 @@ import {
   updateUser,
   updateUserPassword,
 } from "../controllers/userController.js";
+import { authorizePermissions } from "../middleware/authMiddleware.js";
 import { validateUserParamId } from "../middleware/validationMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getAllUser);
+router.get("/", authorizePermissions("admin"), getAllUser);
 router.get("/:id", validateUserParamId, getSingleUser);
 router.get("/current-user", getCurrentUser);
 router.post("/update", updateUser);
