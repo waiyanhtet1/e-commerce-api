@@ -32,7 +32,7 @@ export const register = async (req, res) => {
   res.status(201).json({ message: "success!", token, user });
 };
 
-export const logout = (req, res) => {
+export const logout = async (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
