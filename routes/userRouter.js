@@ -12,9 +12,9 @@ import { validateUserParamId } from "../middleware/validationMiddleware.js";
 const router = express.Router();
 
 router.get("/", authorizePermissions("admin"), getAllUser);
-router.get("/:id", validateUserParamId, getSingleUser);
 router.get("/current-user", getCurrentUser);
 router.post("/update", updateUser);
 router.post("/updateUserPassword", updateUserPassword);
+router.get("/:id", validateUserParamId, getSingleUser);
 
 export default router;
