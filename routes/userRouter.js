@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.get("/", authorizePermissions("admin"), getAllUser);
 router.get("/current-user", getCurrentUser);
-router.post("/update", updateUser);
-router.post("/updateUserPassword", updateUserPassword);
+router.patch("/update", updateUser);
+router.patch("/updateUserPassword", updateUserPassword);
 router.get("/:id", validateUserParamId, getSingleUser);
 
 export default router;
