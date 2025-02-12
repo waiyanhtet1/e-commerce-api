@@ -1,6 +1,7 @@
 import { body, param, validationResult } from "express-validator";
 import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 import User from "../models/userModel.js";
+import { PRODUCT_CATEGORY } from "../utils/constants.js";
 import { validateMongoId } from "../utils/validationUtils.js";
 
 const withValidationErrors = (validateValues) => {
@@ -52,4 +53,24 @@ export const validateUserParamId = withValidationErrors([
     const user = await User.findById(value);
     if (!user) throw new NotFoundError("No User Found!");
   }),
+]);
+
+export const validateProductInput = withValidationErrors([
+  body("name")
+    .notEmpty()
+    .withMessage("Product Name is required!")
+    .isLength({ max: 100 })
+    .withMessage("Name can not be more than 100 characters"),
+  body("price").notEmpty().withMessage("Price is required!"),
+  body("description")
+    .notEmpty()
+    .withMessage("Description is required!")
+    .isLength({ max: 1000 })
+    .withMessage("Description can not be more than 1000 characters"),
+  body("category")
+    .isIn(Object.values(PRODUCT_CATEGORY))
+    .withMessage("Provide correct category name"),
+  body("company").notEmpty().withMessage("Company Name is required!"),
+  body("colors").notEmpty().withMessage("Colors are required!"),
+  body("inventory").notEmpty().withMessage("Inventory Amount is required!"),
 ]);
