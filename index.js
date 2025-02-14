@@ -9,6 +9,7 @@ import morgan from "morgan";
 import { authenticateUser } from "./middleware/authMiddleware.js";
 import authRouter from "./routes/authRouters.js";
 import productRouter from "./routes/productRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
 import userRouter from "./routes/userRouter.js";
 
 const app = express();
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/auth", authRouter); // auth route
 app.use("/api/v1/users", authenticateUser, userRouter); // user route
 app.use("/api/v1/products", productRouter); // product route
+app.use("/api/v1/reviews", reviewRouter); // review route
 
 // not found handler
 app.use("*", (req, res) => {
