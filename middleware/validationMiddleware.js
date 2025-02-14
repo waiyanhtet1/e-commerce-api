@@ -79,7 +79,7 @@ export const validationReviewInput = withValidationErrors([
   body("rating")
     .notEmpty()
     .withMessage("Rating is required!")
-    .isLength({ min: 1, max: 5 })
+    .isInt({ min: 1, max: 5 })
     .withMessage("Rating must be between 1 and 5"),
   body("title")
     .notEmpty()
@@ -92,4 +92,5 @@ export const validationReviewInput = withValidationErrors([
     .withMessage("Comment is required!")
     .isLength({ max: 100 })
     .withMessage("Comment can not be more than 100 characters"),
+  body("product").notEmpty().withMessage("Product Id is required!"),
 ]);
