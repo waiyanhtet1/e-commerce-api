@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getAllProducts,
   getSingleProduct,
+  getSingleProductReview,
   updateProduct,
   uploadImage,
 } from "../controllers/productController.js";
@@ -35,5 +36,7 @@ router
 router
   .route("/uploadImage")
   .post([authenticateUser, authorizePermissions("admin")], uploadImage);
+
+router.route("/:id/reviews").get(getSingleProductReview);
 
 export default router;

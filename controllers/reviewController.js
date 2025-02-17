@@ -5,7 +5,12 @@ import Review from "../models/ReviewModel.js";
 import { checkReviewIdExit } from "../utils/validationUtils.js";
 
 export const getAllReviews = async (req, res) => {
-  const reviews = await Review.find();
+  const reviews = await Review.find()
+    .populate({
+      path: "product",
+      select: "name price",
+    })
+    .populate({ path: "user", select: "name email" });
   res.status(200).json({ length: reviews.length, reviews });
 };
 

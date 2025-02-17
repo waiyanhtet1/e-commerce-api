@@ -2,7 +2,11 @@ import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import { BadRequestError } from "../errors/customErrors.js";
 import Product from "../models/ProductModel.js";
-import { checkProductIdExit } from "../utils/validationUtils.js";
+import Review from "../models/ReviewModel.js";
+import {
+  checkProductIdExit,
+  validateMongoId,
+} from "../utils/validationUtils.js";
 
 export const createProduct = async (req, res) => {
   req.body.user = req.user.userId;
@@ -17,7 +21,11 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const getSingleProduct = async (req, res) => {
-  const product = await checkProductIdExit(req.params.id);
+  const { id } = req.params;
+  validateMongoId(id);
+
+  const product = await Product.findById(id).populate("reviews");
+  if (!product) throw new NotFoundError("No Product Found!");
   res.status(200).json(product);
 };
 
@@ -53,4 +61,15 @@ export const uploadImage = async (req, res) => {
   fs.unlinkSync(req.files.image.tempFilePath);
 
   res.status(200).json({ message: "uploaded", image: result.secure_url });
+};
+
+export const getSingleProductReview = async (req, res) => {
+  const { id: productId } = req.params;
+  const reviews = await Review.find({ product: productId })
+    .populate({
+      path: "product",
+      select: "name price",
+    })
+    .populate({ path: "user", select: "name email" });
+  res.status(200).json({ length: reviews.length, reviews });
 };
